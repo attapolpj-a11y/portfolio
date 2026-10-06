@@ -42,3 +42,14 @@ if(gaze){
 }
 // Preserve the current section when switching between language versions.
 document.querySelectorAll('.language-switch a').forEach(link=>link.addEventListener('click',()=>{if(location.hash)link.hash=location.hash;}));
+
+// A small watercolor bloom follows a mouse click without intercepting controls.
+window.addEventListener('click',e=>{
+ if(!fine.matches||reduced.matches||e.detail===0||e.pointerType==='touch'||e.target.closest('video,input,textarea,[contenteditable="true"]'))return;
+ const drop=document.createElement('span');drop.className='watercolor-drop';drop.setAttribute('aria-hidden','true');
+ drop.style.left=`${e.clientX}px`;drop.style.top=`${e.clientY}px`;
+ drop.style.setProperty('--paint',['#77bde8','#367cca','#184c9d'][Math.floor(Math.random()*3)]);
+ drop.style.setProperty('--tilt',`${Math.random()*90-45}deg`);
+ (document.querySelector('dialog[open]')||document.body).append(drop);
+ drop.addEventListener('animationend',()=>drop.remove(),{once:true});setTimeout(()=>drop.remove(),1100);
+},{passive:true});
