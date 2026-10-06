@@ -53,3 +53,22 @@ window.addEventListener('click',e=>{
  (document.querySelector('dialog[open]')||document.body).append(drop);
  drop.addEventListener('animationend',()=>drop.remove(),{once:true});setTimeout(()=>drop.remove(),1100);
 },{passive:true});
+
+// First-visit postcard: a single paint stroke opens the existing portfolio.
+const welcome=document.querySelector('#welcome-screen');
+if(welcome){
+ const paper=welcome.querySelector('#enter-portfolio');
+ let entering=false,returnFocus=null,entryTimer;
+ const markEntered=()=>{try{sessionStorage.setItem('attapol-postcard-entered','yes');}catch(e){/* Storage may be unavailable; the entrance still works. */}};
+ const finishEntry=()=>{clearTimeout(entryTimer);welcome.close();welcome.classList.remove('is-entering');welcome.querySelector('.postcard-bloom')?.remove();document.body.classList.remove('postcard-open');document.documentElement.classList.remove('welcome-pending');entering=false;const target=returnFocus||document.querySelector('.hero h1');if(target){if(!target.hasAttribute('tabindex')&&!returnFocus)target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}};
+ function openPostcard(trigger=null){returnFocus=trigger;entering=false;welcome.classList.remove('is-entering');welcome.querySelector('.postcard-bloom')?.remove();document.body.classList.add('postcard-open');welcome.showModal();document.documentElement.classList.remove('welcome-pending');welcome.scrollTop=0;paper.focus({preventScroll:true});}
+ function enterPortfolio(e,direct=false){if(entering)return;entering=true;markEntered();if(direct||reduced.matches){finishEntry();return;}const r=paper.getBoundingClientRect();const bloom=document.createElement('span');bloom.className='postcard-bloom';bloom.setAttribute('aria-hidden','true');bloom.style.setProperty('--bloom-x',`${e.detail?e.clientX-r.left:r.width/2}px`);bloom.style.setProperty('--bloom-y',`${e.detail?e.clientY-r.top:r.height/2}px`);paper.append(bloom);welcome.classList.add('is-entering');entryTimer=setTimeout(finishEntry,900);}
+ welcome.addEventListener('keydown',e=>{if(e.key==='Tab')welcome.classList.add('keyboard-navigation');});
+ welcome.addEventListener('pointerdown',()=>welcome.classList.remove('keyboard-navigation'));
+ paper.addEventListener('click',e=>enterPortfolio(e));
+ welcome.querySelector('[data-enter-direct]').addEventListener('click',e=>enterPortfolio(e,true));
+ welcome.addEventListener('cancel',e=>{e.preventDefault();markEntered();finishEntry();});
+ document.querySelectorAll('[data-open-postcard]').forEach(button=>button.addEventListener('click',()=>openPostcard(button)));
+ let seen=false;try{seen=sessionStorage.getItem('attapol-postcard-entered')==='yes';}catch(e){}
+ if(!seen&&typeof welcome.showModal==='function')openPostcard();else document.documentElement.classList.remove('welcome-pending');
+}
