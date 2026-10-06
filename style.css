@@ -131,3 +131,14 @@ body.postcard-open{overflow:hidden}
 @media(max-width:700px){.welcome-scene{padding:88px 24px 76px}.welcome-top{left:24px;right:24px;top:max(20px,env(safe-area-inset-top))}.welcome-wordmark{font-size:25px}.journey-postcard{padding:30px 24px 28px}.postcard-kicker{font-size:8px;letter-spacing:1.8px;margin-bottom:18px}.postcard-title{font-size:36px;margin-bottom:18px}.postcard-story{font-size:15px;line-height:1.95}.postcard-signature{font-size:22px;margin-top:20px}.postcard-invitation{font-size:12px;gap:8px;margin-top:22px}.postcard-hint{font-size:10px}.postcard-note{font-size:13px}.welcome-skip{right:24px}.welcome-table img{object-position:46% 45%}}
 @media(max-height:700px) and (min-width:701px){.welcome-scene{padding-top:82px;padding-bottom:60px}.journey-postcard{padding:25px 42px}.postcard-title{font-size:38px;margin-bottom:15px}.postcard-story{font-size:15px;line-height:1.8}.postcard-kicker{margin-bottom:14px}.postcard-signature{margin-top:16px}.postcard-invitation{margin-top:18px}}
 @media(prefers-reduced-motion:reduce){.postcard-wrap,.journey-postcard{transition:none}.postcard-wrap:hover{transform:rotate(-2deg)}.welcome-screen.is-entering .postcard-bloom,.welcome-screen.is-entering .welcome-scene{animation:none}}
+
+/* Soft Thai handwriting is scoped to the welcome postcard. */
+@font-face{font-family:'Itim Postcard';src:url('assets/fonts/Itim-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+html:lang(th) .postcard-title,html:lang(th) .postcard-title em,html:lang(th) .postcard-story,html:lang(th) .postcard-invitation,html:lang(th) .postcard-hint,html:lang(th) .welcome-skip{font-family:'Itim Postcard','Thonburi',Tahoma,sans-serif;font-weight:400;font-style:normal;letter-spacing:0;font-synthesis:none}
+html:lang(th) .postcard-title{font-size:clamp(42px,4.2vw,56px);line-height:1.25}
+html:lang(th) .postcard-story{font-size:20px;line-height:1.85}
+html:lang(th) .postcard-invitation{font-size:18px}
+html:lang(th) .postcard-hint{font-size:14px}
+html:lang(th) .welcome-skip{font-size:16px}
+@media(max-width:700px){html:lang(th) .postcard-title{font-size:42px}html:lang(th) .postcard-story{font-size:18px;line-height:1.8}html:lang(th) .postcard-invitation{font-size:16px}html:lang(th) .postcard-hint{font-size:13px}}
+@media(max-height:700px) and (min-width:701px){html:lang(th) .postcard-title{font-size:42px}html:lang(th) .postcard-story{font-size:18px}}
