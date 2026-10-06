@@ -79,3 +79,14 @@ html[lang="th"] .clean-home .hero h1{font-family:"Thonburi",Tahoma,Arial,sans-se
 @keyframes watercolor-bloom{0%{opacity:.5;transform:scale(.2) rotate(var(--tilt))}40%{opacity:.32;transform:scale(.85) rotate(var(--tilt))}100%{opacity:0;transform:scale(1.2) rotate(var(--tilt))}}
 @media(prefers-reduced-motion:reduce){.watercolor-drop{display:none}}
 @media(hover:hover) and (pointer:fine){html body,html body *{cursor:url("assets/paintbrush-cursor.svg") 4 27,auto!important}html body input,html body textarea,html body [contenteditable="true"]{cursor:text!important}html body video{cursor:auto!important}#view-cursor{display:none!important}}
+
+/* Supplied organisation logos alongside career and education details. */
+.experience-identity{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.company-logo{width:184px;height:104px;padding:16px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:12px}
+.company-logo img{width:100%;height:100%;object-fit:contain}
+.company-logo--muse{background:#000;border-color:#000}
+.experience-identity .timeline-date{margin:0;line-height:1.7}
+.education-identity{display:flex;align-items:flex-start;gap:22px}
+.university-logo{width:76px;height:76px;object-fit:contain;flex:none;margin-top:8px}
+.education-identity h3{margin-top:8px}
+@media(max-width:700px){.experience-identity{flex-direction:row;align-items:center;gap:18px;margin-bottom:16px}.company-logo{width:136px;height:82px;padding:12px;flex:none}.experience-identity .timeline-date{font-size:10px;letter-spacing:.5px;max-width:145px}.education-identity{gap:16px}.university-logo{width:62px;height:62px}.education-identity h3{font-size:21px}}
