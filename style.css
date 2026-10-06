@@ -142,3 +142,50 @@ html:lang(th) .postcard-hint{font-size:14px}
 html:lang(th) .welcome-skip{font-size:16px}
 @media(max-width:700px){html:lang(th) .postcard-title{font-size:42px}html:lang(th) .postcard-story{font-size:18px;line-height:1.8}html:lang(th) .postcard-invitation{font-size:16px}html:lang(th) .postcard-hint{font-size:13px}}
 @media(max-height:700px) and (min-width:701px){html:lang(th) .postcard-title{font-size:42px}html:lang(th) .postcard-story{font-size:18px}}
+
+/* A consistent reading scale for supporting copy, labels and controls. */
+:root{--reading-copy:16px;--reading-label:14px;--reading-control:15px}
+nav,.clean-home nav{font-size:var(--reading-control)}
+.menu-toggle,.button,.text-link,.clean-home .hero-actions .button{font-size:var(--reading-control);line-height:1.65}
+.eyebrow,.hero .eyebrow,.clean-home .hero .eyebrow,.card-caption .eyebrow,.muse-caption .eyebrow,.archive-caption .eyebrow,.archive-preview .eyebrow{font-size:var(--reading-label);letter-spacing:1.1px;line-height:1.8}
+.hero-intro,.section-heading>p,.card-caption>p:last-child,.steps p,.about-preview p:not(.eyebrow):not(.about-lead),.contact-panel>p:not(.eyebrow),.timeline article div>p:last-child,.education p,.experience-detail,.pm-capability-grid p,.pm-direction>p:last-child,.muse-caption p,.archive-lead,.archive-caption>p:not(.eyebrow){font-size:var(--reading-copy);line-height:1.9}
+.reference-hero .hero-line,.clean-home .hero-line{font-size:18px;line-height:1.8}
+.reference-hero .hero-line span,.hero-role,html[lang=th] .clean-home .hero-role{font-size:16px;line-height:1.8}
+.art-label,.character-hint{font-size:13px;line-height:1.6;letter-spacing:.5px}
+.art-sticker small{font-size:12px;letter-spacing:.5px}
+.hero-bottom,.clean-home .hero-bottom,.brand-strip>span,.steps article>span{font-size:var(--reading-label);line-height:1.7;letter-spacing:.8px}
+.card-index{font-size:13px}.card-metric>span{font-size:var(--reading-label);line-height:1.7;flex:1;max-width:210px}.card-metric strong{flex:none}
+footer p,footer>a:last-child{font-size:var(--reading-label);line-height:1.8}
+.filters button,.archive-filters button{font-size:var(--reading-control);line-height:1.65}
+.gallery-card>span{font-size:16px;line-height:1.65;gap:10px}
+.tags span{font-size:var(--reading-label);line-height:1.7}
+.timeline-date,.experience-identity .timeline-date{font-size:var(--reading-label);line-height:1.8;letter-spacing:.5px}
+.timeline .role{font-size:16px;line-height:1.8}.timeline .experience-focus{font-size:var(--reading-label);line-height:1.8}
+.contact-rows span,.project-meta dt{font-size:var(--reading-label);line-height:1.7;letter-spacing:.8px}
+.project-meta dd{font-size:16px;line-height:1.85}
+.case-toc a,.evidence-note,.case-gallery figcaption,.video-caption,#gallery-caption{font-size:15px;line-height:1.85}
+.story-section>p:last-child{font-size:17px;line-height:1.95}
+.pm-proof span{font-size:15px;line-height:1.85}
+.language-switch{font-size:var(--reading-label)}
+.muse-photo>span,.certificate-image>span,.muse-caption summary,.course-original,.course-completed{font-size:var(--reading-label);line-height:1.8}
+.archive-summary,.archive-status{font-size:15px;line-height:1.8}
+.archive-image>span,.archive-duration,.archive-case-link,.archive-preview>div>span{font-size:var(--reading-label);line-height:1.8}
+.archive-caption h3{font-size:22px;line-height:1.5}.archive-preview h3{font-size:20px;line-height:1.5}
+.welcome-languages{font-size:14px}.postcard-kicker{font-size:13px;letter-spacing:1.6px;line-height:1.8}
+.postcard-hint,html:lang(th) .postcard-hint{font-size:14px;line-height:1.8;color:#657880}
+.postcard-invitation{font-size:16px;line-height:1.7}.welcome-skip,.postcard-revisit button{font-size:15px;line-height:1.8}
+@media(max-width:700px){
+ nav a{font-size:16px}.hero-actions{flex-wrap:wrap;gap:14px 20px}.contact-panel .text-link{margin:12px 10px 0}
+ .hero-bottom{flex-wrap:wrap;gap:8px;position:static;margin-top:24px;width:100%;padding-bottom:0}.hero-bottom>span:first-child{max-width:none}.clean-home .hero-bottom{position:static;margin-top:12px;text-align:center}.character-hint{font-size:13px}
+ .gallery-grid{gap:28px 18px}.gallery-card>span{font-size:15px}.card-metric{flex-wrap:wrap;justify-content:flex-start;gap:8px 16px}.card-metric>span{font-size:14px;flex:1;min-width:130px;max-width:none;text-align:left}
+ .steps{grid-template-columns:1fr;gap:28px}.project-meta>div{grid-template-columns:110px minmax(0,1fr)}
+ .archive-preview-grid{grid-template-columns:1fr 1fr}.archive-preview h3{font-size:18px}.archive-preview .eyebrow{letter-spacing:.5px}
+ .experience-identity{flex-wrap:wrap;gap:14px}.experience-identity .timeline-date{max-width:none}
+ .postcard-kicker{font-size:12px;letter-spacing:1.2px}.postcard-hint{font-size:14px}.postcard-note{font-size:15px}.postcard-invitation{font-size:15px}
+}
+@media(max-width:360px){.archive-preview-grid{grid-template-columns:1fr}.project-meta>div{grid-template-columns:1fr;gap:4px}}
+/* Keep enlarged labels comfortable in compact headers and the postcard. */
+.character-hint,.art-label,.card-index{font-size:14px}
+.postcard-kicker{font-size:14px;letter-spacing:1px}
+@media(max-width:700px){.site-header{gap:12px}.menu-toggle{gap:12px;padding:10px 12px}.postcard-kicker{font-size:14px;letter-spacing:1px}.character-hint{font-size:14px}}
+@media(max-width:360px){.site-header{gap:8px}.menu-toggle{gap:8px}}
