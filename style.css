@@ -189,3 +189,19 @@ footer p,footer>a:last-child{font-size:var(--reading-label);line-height:1.8}
 .postcard-kicker{font-size:14px;letter-spacing:1px}
 @media(max-width:700px){.site-header{gap:12px}.menu-toggle{gap:12px;padding:10px 12px}.postcard-kicker{font-size:14px;letter-spacing:1px}.character-hint{font-size:14px}}
 @media(max-width:360px){.site-header{gap:8px}.menu-toggle{gap:8px}}
+
+/* Music remains an optional, visible YouTube player inside the postcard. */
+.welcome-music{position:absolute;left:5%;bottom:max(22px,env(safe-area-inset-bottom));z-index:6}
+.welcome-music-toggle{display:flex;align-items:center;gap:10px;min-height:44px;border:1px solid #fff9ee77;border-radius:24px;padding:9px 17px;background:#25374680;color:#fff9ee;font-size:15px;line-height:1.6;backdrop-filter:blur(10px)}
+.welcome-music-toggle[aria-expanded=true]{background:#fcf9f1;color:#284a65;border-color:#fcf9f1}
+.welcome-music-toggle>span:first-child{font-size:20px}
+.welcome-music-panel{position:absolute;bottom:58px;left:0;width:344px;max-width:calc(100vw - 48px);padding:12px;background:#fcf9f1;border:1px solid #ded8c9;border-radius:12px;color:#283b4b;box-shadow:0 12px 40px #18222d55}
+.welcome-music-panel[hidden]{display:none}
+.welcome-music-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:14px;line-height:1.7}
+.welcome-music-heading button{background:none;border:0;min-width:40px;min-height:40px;font-size:18px}
+#welcome-music-player{width:100%;height:200px;display:block;border:0;background:#e3edf3;border-radius:4px;overflow:hidden}
+.welcome-music-status{font-size:14px;line-height:1.8;margin:10px 0 4px}
+.welcome-music-panel>a{display:inline-block;font-size:14px;line-height:1.8;color:#184c9d;border-bottom:1px solid #b3c8d6;padding:3px 0}
+html:lang(th) .welcome-music-toggle{font-family:'Itim Postcard','Thonburi',Tahoma,sans-serif;font-size:18px}
+@media(max-width:700px){.welcome-music{left:24px}.welcome-music-toggle{padding:8px 12px;font-size:14px}.welcome-skip{font-size:14px;right:24px}.welcome-music-panel{max-height:calc(100svh - 110px);overflow:auto}}
+@media(max-width:380px){.welcome-scene{padding-bottom:126px}.welcome-skip{bottom:max(80px,env(safe-area-inset-bottom))}}
