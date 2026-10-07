@@ -60,9 +60,9 @@ if(welcome){
  const paper=welcome.querySelector('#enter-portfolio');
  let entering=false,returnFocus=null,entryTimer;
  const markEntered=()=>{try{sessionStorage.setItem('attapol-postcard-entered','yes');}catch(e){/* Storage may be unavailable; the entrance still works. */}};
- const finishEntry=()=>{clearTimeout(entryTimer);welcome.dispatchEvent(new CustomEvent('postcard-music-stop'));welcome.close();welcome.classList.remove('is-entering');welcome.querySelector('.postcard-bloom')?.remove();document.body.classList.remove('postcard-open');document.documentElement.classList.remove('welcome-pending');entering=false;const target=returnFocus||document.querySelector('.hero h1');if(target){if(!target.hasAttribute('tabindex')&&!returnFocus)target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}};
+ const finishEntry=()=>{clearTimeout(entryTimer);welcome.close();welcome.classList.remove('is-entering');welcome.querySelector('.postcard-bloom')?.remove();document.body.classList.remove('postcard-open');document.documentElement.classList.remove('welcome-pending');entering=false;const target=returnFocus||document.querySelector('.hero h1');if(target){if(!target.hasAttribute('tabindex')&&!returnFocus)target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}};
  function openPostcard(trigger=null){returnFocus=trigger;entering=false;welcome.classList.remove('is-entering');welcome.querySelector('.postcard-bloom')?.remove();document.body.classList.add('postcard-open');welcome.showModal();document.documentElement.classList.remove('welcome-pending');welcome.scrollTop=0;paper.focus({preventScroll:true});}
- function enterPortfolio(e,direct=false){if(entering)return;entering=true;markEntered();welcome.dispatchEvent(new CustomEvent('postcard-music-fade'));if(direct||reduced.matches){finishEntry();return;}const r=paper.getBoundingClientRect();const bloom=document.createElement('span');bloom.className='postcard-bloom';bloom.setAttribute('aria-hidden','true');bloom.style.setProperty('--bloom-x',`${e.detail?e.clientX-r.left:r.width/2}px`);bloom.style.setProperty('--bloom-y',`${e.detail?e.clientY-r.top:r.height/2}px`);paper.append(bloom);welcome.classList.add('is-entering');entryTimer=setTimeout(finishEntry,900);}
+ function enterPortfolio(e,direct=false){if(entering)return;entering=true;markEntered();if(direct||reduced.matches){finishEntry();return;}const r=paper.getBoundingClientRect();const bloom=document.createElement('span');bloom.className='postcard-bloom';bloom.setAttribute('aria-hidden','true');bloom.style.setProperty('--bloom-x',`${e.detail?e.clientX-r.left:r.width/2}px`);bloom.style.setProperty('--bloom-y',`${e.detail?e.clientY-r.top:r.height/2}px`);paper.append(bloom);welcome.classList.add('is-entering');entryTimer=setTimeout(finishEntry,900);}
  welcome.addEventListener('keydown',e=>{if(e.key==='Tab')welcome.classList.add('keyboard-navigation');});
  welcome.addEventListener('pointerdown',()=>welcome.classList.remove('keyboard-navigation'));
  paper.addEventListener('click',e=>enterPortfolio(e));
@@ -73,42 +73,67 @@ if(welcome){
  if(!seen&&typeof welcome.showModal==='function')openPostcard();else document.documentElement.classList.remove('welcome-pending');
 }
 
-// Opt-in music uses the official visible YouTube embed, never an audio rip.
-if(welcome){
- const musicButton=welcome.querySelector('#welcome-music-toggle');
- const musicPanel=welcome.querySelector('#welcome-music-panel');
- const musicLabel=welcome.querySelector('[data-music-label]');
- const musicStatus=welcome.querySelector('.welcome-music-status');
+
+// A shared, gently played MP3 resumes its position across regular page navigation.
+const portfolioMusic=document.querySelector('#portfolio-music');
+if(portfolioMusic){
+ const musicKey='attapol-portfolio-music';
  const english=document.documentElement.lang==='en';
- let musicPlayer=null,musicReady=false,musicOpen=false,musicLoading=false,musicFade=null,musicLoadTimer=null;
- const say=(th,en)=>{musicStatus.textContent=english?en:th;};
- const stopFade=()=>{clearInterval(musicFade);musicFade=null;};
- function closeMusic(){musicOpen=false;stopFade();musicPlayer?.pauseVideo?.();musicPanel.hidden=true;musicButton.setAttribute('aria-expanded','false');musicLabel.textContent=english?'Play gentle music':'เปิดเพลงคลอ';}
- function unavailable(){say('ยังเล่นเพลงไม่ได้ ลองเปิดฟังบน YouTube ได้ครับ','Music is unavailable here. You can listen on YouTube.');clearTimeout(musicLoadTimer);}
- function buildMusicPlayer(){
-  if(musicPlayer)return;
-  musicPlayer=new YT.Player('welcome-music-player',{host:'https://www.youtube-nocookie.com',width:'100%',height:200,videoId:'gn7HgzOEdHU',playerVars:{playsinline:1,controls:1,rel:0,origin:location.origin},events:{
-   onReady:event=>{clearTimeout(musicLoadTimer);musicReady=true;event.target.setVolume(12);say('กด ▶ ในตัวเล่นเพื่อเริ่มเพลง','Press ▶ in the player to start the music.');if(musicOpen&&welcome.open)event.target.playVideo();},
-   onStateChange:event=>{if(event.data===1){if(!musicOpen||!welcome.open){event.target.pauseVideo();return;}say('เพลงคลอเบา ๆ · ปรับเสียงได้ในตัวเล่น','Gentle music · Adjust the volume in the player.');}else if(event.data===2||event.data===0)say('กด ▶ ในตัวเล่นเพื่อฟังต่อ','Press ▶ in the player to listen again.');},
-   onError:unavailable,
-   onAutoplayBlocked:()=>say('กด ▶ ในตัวเล่นเพื่อเริ่มเพลง','Press ▶ in the player to start the music.')
-  }});
-  musicPlayer.getIframe().setAttribute('title','Duomo — Wildest Dreams · YouTube music player');
+ const musicButtons=[...document.querySelectorAll('[data-music-toggle]')];
+ let saved={enabled:true,time:0};
+ try{const value=JSON.parse(sessionStorage.getItem(musicKey));if(value&&typeof value.enabled==='boolean')saved={enabled:value.enabled,time:Number(value.time)||0};}catch(e){}
+ let musicEnabled=saved.enabled,musicPending=false,musicFailed=false,seeking=saved.time>0,request=0,lastSave=0;
+ portfolioMusic.volume=.12;
+ function saveMusic(){try{sessionStorage.setItem(musicKey,JSON.stringify({enabled:musicEnabled,time:seeking?saved.time:portfolioMusic.currentTime}));}catch(e){}}
+ function updateMusicButtons(){
+  const playing=musicEnabled&&!portfolioMusic.paused&&!musicFailed;
+  for(const button of musicButtons){
+   const label=musicFailed?(english?'Music unavailable':'เพลงยังเล่นไม่ได้'):playing?(english?'Music off':'ปิดเพลง'):musicEnabled&&musicPending?(english?'Music on':'เปิดเพลง'):(english?'Music on':'เปิดเพลง');
+   button.setAttribute('aria-pressed',String(playing));
+   button.dataset.musicState=playing?'playing':musicEnabled?'waiting':'off';
+   button.querySelector('[data-music-label]').textContent=label;
+   button.setAttribute('aria-label',musicFailed?(english?'Retry background music':'ลองเปิดเพลงอีกครั้ง'):playing?(english?'Turn off background music':'ปิดเพลงคลอ'):(english?'Turn on background music':'เปิดเพลงคลอ'));
+   button.title=playing?(english?'Background music is playing softly':'กำลังเล่นเพลงคลอเบา ๆ'):(english?'Turn on background music':'เปิดเพลงคลอ');
+  }
  }
- function loadMusic(){
-  if(musicReady){stopFade();musicPlayer.setVolume(12);musicPlayer.playVideo();return;}
-  if(musicLoading)return;
-  musicLoading=true;say('กำลังเตรียมเพลง…','Preparing the music…');
-  musicLoadTimer=setTimeout(unavailable,15000);
-  if(window.YT?.Player){buildMusicPlayer();return;}
-  const prior=window.onYouTubeIframeAPIReady;
-  window.onYouTubeIframeAPIReady=()=>{prior?.();buildMusicPlayer();};
-  const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.async=true;script.onerror=unavailable;document.head.append(script);
+ function videoPlaying(){return [...document.querySelectorAll('video')].some(video=>!video.paused&&!video.ended&&!video.muted);}
+ function startMusic(){
+  if(!musicEnabled||musicFailed||videoPlaying())return;
+  if(!portfolioMusic.paused){updateMusicButtons();return;}
+  const token=++request;
+  portfolioMusic.play().then(()=>{
+   if(!musicEnabled||token!==request){if(!musicEnabled)portfolioMusic.pause();return;}
+   musicPending=false;updateMusicButtons();saveMusic();
+  }).catch(error=>{
+   if(token!==request)return;
+   if(error.name==='NotAllowedError')musicPending=true;
+   else if(error.name!=='AbortError')musicFailed=true;
+   updateMusicButtons();
+  });
  }
- musicButton?.addEventListener('click',()=>{if(musicOpen){closeMusic();return;}musicOpen=true;musicPanel.hidden=false;musicButton.setAttribute('aria-expanded','true');musicLabel.textContent=english?'Turn off music':'ปิดเพลงคลอ';loadMusic();});
- welcome.querySelector('[data-close-music]')?.addEventListener('click',()=>{closeMusic();musicButton.focus();});
- welcome.addEventListener('postcard-music-fade',()=>{if(!musicReady||!musicOpen)return;stopFade();const startVolume=musicPlayer.getVolume(),startTime=performance.now();musicFade=setInterval(()=>{const progress=Math.min((performance.now()-startTime)/800,1);musicPlayer.setVolume(Math.round(startVolume*(1-progress)));if(progress===1)closeMusic();},50);});
- welcome.addEventListener('postcard-music-stop',closeMusic);
- window.addEventListener('pagehide',closeMusic);
- document.addEventListener('visibilitychange',()=>{if(document.hidden)closeMusic();});
+ function restorePosition(){if(!seeking||!Number.isFinite(portfolioMusic.duration)||portfolioMusic.duration<=0)return;seeking=false;if(saved.time>0)portfolioMusic.currentTime=saved.time%portfolioMusic.duration;}
+ portfolioMusic.addEventListener('loadedmetadata',restorePosition);
+ portfolioMusic.addEventListener('durationchange',restorePosition);
+ if(portfolioMusic.readyState>=1)restorePosition();
+ for(const button of musicButtons)button.addEventListener('click',()=>{
+  if(musicEnabled&&!portfolioMusic.paused){musicEnabled=false;musicPending=false;++request;portfolioMusic.pause();saveMusic();updateMusicButtons();return;}
+  musicEnabled=true;musicPending=false;
+  if(musicFailed){musicFailed=false;seeking=false;saved.time=portfolioMusic.currentTime;portfolioMusic.load();}
+  saveMusic();startMusic();updateMusicButtons();
+ });
+ function firstInteraction(event){if(!event.isTrusted||event.target.closest('[data-music-toggle]')||!musicEnabled||musicFailed)return;startMusic();}
+ document.addEventListener('click',firstInteraction);
+ document.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' ')firstInteraction(event);});
+ portfolioMusic.addEventListener('playing',()=>{musicPending=false;updateMusicButtons();});
+ portfolioMusic.addEventListener('pause',updateMusicButtons);
+ portfolioMusic.addEventListener('error',()=>{musicFailed=true;updateMusicButtons();});
+ portfolioMusic.addEventListener('timeupdate',()=>{if(performance.now()-lastSave>2000){lastSave=performance.now();saveMusic();}});
+ window.addEventListener('pagehide',()=>{saveMusic();portfolioMusic.pause();});
+ window.addEventListener('pageshow',event=>{
+  if(event.persisted){try{const value=JSON.parse(sessionStorage.getItem(musicKey));if(value&&typeof value.enabled==='boolean'){musicEnabled=value.enabled;saved.time=Number(value.time)||0;seeking=saved.time>0;restorePosition();}}catch(e){}updateMusicButtons();}
+  if(musicEnabled)startMusic();else portfolioMusic.pause();
+ });
+ document.addEventListener('play',event=>{if(event.target.tagName==='VIDEO'&&!event.target.muted){++request;portfolioMusic.pause();}},true);
+ for(const name of ['pause','ended'])document.addEventListener(name,event=>{if(event.target.tagName==='VIDEO'&&!videoPlaying())startMusic();},true);
+ updateMusicButtons();if(musicEnabled)startMusic();
 }
