@@ -6,7 +6,7 @@ function closeMenu(){navigation?.classList.remove('open');menu?.setAttribute('ar
 menu?.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));navigation.classList.toggle('open',open);});
 navigation?.addEventListener('click',e=>{if(e.target.closest('a'))closeMenu();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&navigation?.classList.contains('open')){closeMenu();menu.focus();}});
-matchMedia('(min-width: 701px)').addEventListener('change',e=>{if(e.matches)closeMenu();});
+matchMedia('(min-width: 1001px)').addEventListener('change',e=>{if(e.matches)closeMenu();});
 if('IntersectionObserver' in window&&!reduced.matches){document.body.classList.add('motion-ready');const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){entry.target.classList.remove('pending');observer.unobserve(entry.target);}}},{threshold:.08});document.querySelectorAll('.reveal').forEach(el=>{el.classList.add('pending');observer.observe(el);});reduced.addEventListener('change',e=>{if(e.matches){document.querySelectorAll('.pending').forEach(el=>el.classList.remove('pending'));observer.disconnect();}});}
 const dialog=document.querySelector('#gallery-dialog');let lastTrigger;
 document.querySelectorAll('[data-image]').forEach(button=>button.addEventListener('click',()=>{lastTrigger=button;const img=document.querySelector('#gallery-image');img.src=button.dataset.image;img.alt=button.dataset.caption;document.querySelector('#gallery-caption').textContent=button.dataset.caption;dialog.showModal();document.body.classList.add('dialog-open');}));
