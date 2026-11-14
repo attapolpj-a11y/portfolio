@@ -190,3 +190,27 @@ html:lang(th) .welcome-file-music-toggle{font-family:'Itim Postcard','Thonburi',
 @media(max-width:700px){.results-teaser-grid{grid-template-columns:1fr}.results-teaser-grid>a{gap:12px}.results-teaser-grid strong{font-size:38px}.results-definitions dl{grid-template-columns:1fr;gap:15px}.highlight-grid .result-card{display:flex}.highlight-grid .result-proof{border-left:0;border-top:1px solid var(--line)}.highlight-grid .result-proof>img{height:190px}.results-grid{grid-template-columns:1fr;gap:24px}.result-card-copy{padding:24px}.result-card h3{font-size:22px}.result-amount strong,.highlight-grid .result-amount strong{font-size:34px}.result-details{grid-template-columns:repeat(2,minmax(0,1fr))}.result-proof>img{height:180px}.results-brand-label{max-width:none}.showcase-evidence{grid-template-columns:1fr}.results-intro h1{font-size:43px}.results-teaser{padding-top:55px;padding-bottom:55px}}
 /* With an additional Results destination, tablets use the existing menu drawer. */
 @media(min-width:701px) and (max-width:1000px){.menu-toggle{display:flex;align-items:center;gap:12px;margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:25px;padding:10px 15px;min-height:44px;font-size:15px}.site-header nav{display:none;position:absolute;top:86px;left:0;right:0;background:var(--paper);border-bottom:1px solid var(--line);padding:20px 5%;flex-direction:column;align-items:stretch;gap:8px;margin-left:0}.site-header nav.open{display:flex}.site-header nav a{padding:13px;font-size:16px}.site-header nav a::after{display:none}.clean-home .site-header nav{top:90px}.site-header .site-music-toggle{align-self:flex-start;width:auto;margin:8px 13px 0}.site-header .site-music-toggle .music-button-label{position:static;width:auto;height:auto;margin:0;overflow:visible;clip-path:none}}
+
+/* Ecommerce dashboard project */
+.dashboard-feature{display:grid;grid-template-columns:1fr 1.15fr;gap:55px;align-items:center;border-bottom:1px solid var(--line)}
+.dashboard-feature h2{font-size:clamp(36px,4.3vw,62px)}
+.dashboard-feature-copy>p:not(.eyebrow){font-size:18px;color:var(--muted);margin:25px 0}
+.dashboard-tags{list-style:none;padding:0;margin:25px 0 30px;display:flex;flex-wrap:wrap;gap:10px}
+.dashboard-tags li{font-size:14px;line-height:1.6;padding:8px 13px;border:1px solid var(--line);border-radius:22px;background:#edf5ff}
+.dashboard-feature-image{display:block;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#edf5ff;box-shadow:0 15px 45px #184c9d0a;transition:transform .2s}
+.dashboard-feature-image:hover{transform:translateY(-4px)}
+.dashboard-feature-image img{width:100%;height:auto}
+.dashboard-feature-image>span{display:block;padding:18px 22px;color:var(--green);font-size:14px;line-height:1.6}
+.dashboard-actions{display:flex;flex-wrap:wrap;gap:25px;align-items:center;margin:30px 0}
+.dashboard-context{padding-top:30px;padding-bottom:65px;border-top:1px solid var(--line)}
+.dashboard-context .case-lead{max-width:930px}
+.dashboard-capabilities{padding-top:35px;padding-bottom:65px}
+.dashboard-capability-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:25px;margin-top:40px}
+.dashboard-capability-grid article{padding:32px;border:1px solid var(--line);border-radius:14px;background:#edf5ff}
+.dashboard-capability-grid .eyebrow{color:var(--green);font-size:15px}
+.dashboard-capability-grid h3{font-size:25px;line-height:1.5;margin:18px 0 10px}
+.dashboard-capability-grid p{font-size:18px;color:var(--muted);margin-bottom:0}
+.dashboard-preview{padding-top:40px}
+.dashboard-preview figure{margin:0}.dashboard-preview figure button{display:block;width:100%;padding:0;background:none;border:1px solid var(--line);border-radius:16px;overflow:hidden}.dashboard-preview img{width:100%;height:auto}.dashboard-preview figcaption{font-size:16px;line-height:1.8;color:var(--muted);margin-top:20px}
+@media(max-width:900px){.dashboard-feature{grid-template-columns:1fr;gap:35px}.dashboard-feature-image{max-width:750px}}
+@media(max-width:700px){.dashboard-capability-grid{grid-template-columns:1fr}.dashboard-capability-grid article{padding:24px}.dashboard-capability-grid h3{font-size:23px}.dashboard-feature h2{font-size:39px}.dashboard-actions{gap:18px}.dashboard-preview .section-heading{align-items:flex-start;flex-direction:column}.dashboard-feature-image>span{font-size:14px;padding:16px}}
