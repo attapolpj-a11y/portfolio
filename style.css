@@ -214,3 +214,10 @@ html:lang(th) .welcome-file-music-toggle{font-family:'Itim Postcard','Thonburi',
 .dashboard-preview figure{margin:0}.dashboard-preview figure button{display:block;width:100%;padding:0;background:none;border:1px solid var(--line);border-radius:16px;overflow:hidden}.dashboard-preview img{width:100%;height:auto}.dashboard-preview figcaption{font-size:16px;line-height:1.8;color:var(--muted);margin-top:20px}
 @media(max-width:900px){.dashboard-feature{grid-template-columns:1fr;gap:35px}.dashboard-feature-image{max-width:750px}}
 @media(max-width:700px){.dashboard-capability-grid{grid-template-columns:1fr}.dashboard-capability-grid article{padding:24px}.dashboard-capability-grid h3{font-size:23px}.dashboard-feature h2{font-size:39px}.dashboard-actions{gap:18px}.dashboard-preview .section-heading{align-items:flex-start;flex-direction:column}.dashboard-feature-image>span{font-size:14px;padding:16px}}
+
+/* Current Live Commerce role */
+.current-role-badge{display:inline-flex;align-items:center;gap:9px;background:#e7f2ff;color:var(--green);border:1px solid #bad5f2;border-radius:22px;padding:9px 14px;font-size:14px;line-height:1.6;font-weight:650;width:fit-content}
+.current-role-badge::before{content:'';width:7px;height:7px;flex:none;background:var(--green);border-radius:50%}
+.current-role-scope{margin-top:28px}.current-role-group{margin-top:28px}.current-role-group h4{font-size:20px;font-weight:600;line-height:1.6;margin:0 0 12px;color:var(--green)}
+.current-role-group .experience-detail{margin-top:0}.current-role .experience-identity{align-items:flex-start}
+@media(max-width:700px){.current-role-group h4{font-size:19px}.current-role-group{margin-top:24px}}
